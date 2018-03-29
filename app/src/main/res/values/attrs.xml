@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CropView">
+        <attr name="cropviewViewportRatio" format="float" />
+        <attr name="cropviewViewportOverlayColor" format="color" />
+        <attr name="cropviewViewportOverlayPadding" format="dimension" />
+        <attr name="cropviewMaxScale" format="float" />
+        <attr name="cropviewMinScale" format="float" />
+    </declare-styleable>
+    <declare-styleable name="ButtonProgress">
+        <attr name="text" format="string" />
+        <attr name="buttonBackground" format="reference" />
+    </declare-styleable>
+</resources>

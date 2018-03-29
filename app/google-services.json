@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "337283900369",
+    "firebase_url": "https://jlast-f98b5.firebaseio.com",
+    "project_id": "jlast-f98b5",
+    "storage_bucket": "jlast-f98b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337283900369:android:71c17cbbbee94f78",
+        "android_client_info": {
+          "package_name": "com.tampir.jlast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337283900369-kpq0u5thk4teaknfk5mi2qbm9oujb8bb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXdQHbDS6fYhGJ5frsEwj8deOrzHmstQ0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:keepScreenOn="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#0F212F">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logojlast"
+        android:visibility="gone"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/jlogo"
+            android:layout_gravity="center"/>
+        <FrameLayout
+            android:id="@+id/framePlayer"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            android:visibility="visible"
+            android:background="#3fff">
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Live with Smartphone"/>
+        <EditText
+            android:id="@+id/edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ID Anda"
+            android:layout_margin="8dp"
+            android:inputType="text"
+            android:background="@drawable/bglogintext"
+            android:maxLines="1"/>
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kata Sandi"
+            android:layout_margin="8dp"
+            android:inputType="textPassword"
+            android:background="@drawable/bglogintext"
+            android:maxLines="1"/>
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="8dp" />
+        <com.tampir.jlast.views.ButtonProgress
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:text="LOGIN"
+            android:textSize="16sp"/>
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="8dp" />
+        <com.tampir.jlast.views.ButtonProgress
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:text="REGISTRASI"
+            app:buttonBackground="@drawable/button_register"
+            android:textSize="16sp"/>
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="8dp" />
+        <TextView
+            android:id="@+id/btnResetPasword"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#9fff"
+            android:textSize="16sp"
+            android:text="Reset Kata Sandi"/>
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

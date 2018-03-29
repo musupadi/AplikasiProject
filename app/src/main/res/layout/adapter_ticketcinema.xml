@@ -1,0 +1,42 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_layout_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="6dp"
+    android:innerRadius="0dp"
+    android:shape="ring"
+    android:thicknessRatio="1.0"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@android:color/white">
+        <RelativeLayout
+            android:id="@+id/btnThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground">
+                <ImageView
+                    android:id="@+id/item_thumbnail"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/localdefault"
+                    android:background="#B3B3B3"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title of Ticket"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="16sp"
+                    android:textColor="#fff"
+                    android:padding="16dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/gradien_black_playerbottomtotop"/>
+        </RelativeLayout>
+</android.support.v7.widget.CardView>

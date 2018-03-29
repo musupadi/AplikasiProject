@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewInterSMSConfirmation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="16dp"
+    android:orientation="vertical">
+<TextView
+    android:id="@+id/lb_infosms"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textColor="@color/colorBlue"
+    android:text="Masukan 6-Digit kode yang telah dikirim ke +628561..."/>
+<android.support.v4.widget.Space
+    android:layout_width="16dp"
+    android:layout_height="16dp" />
+<com.alimuzaffar.lib.pin.PinEntryEditText
+    android:id="@+id/txt_pin_entry"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:cursorVisible="false"
+    android:digits="1234567890"
+    android:inputType="number"
+    android:maxLength="6"
+    android:textIsSelectable="false"
+    android:textSize="24sp"
+    android:textColor="@color/colorGreen"
+    app:pinLineStroke="1dp"
+    app:pinLineStrokeSelected="1dp"
+    app:pinLineColors="@color/colorPrimary" />
+<com.tampir.jlast.views.ButtonProgress
+    android:id="@+id/btnReSendSms"
+    android:layout_marginTop="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    app:buttonBackground="@drawable/button_blue"
+    app:text="KIRIM ULANG SMS"
+    android:textSize="16sp"/>
+</LinearLayout>

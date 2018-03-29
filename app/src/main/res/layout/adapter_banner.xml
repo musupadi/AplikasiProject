@@ -1,0 +1,18 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/btnBanner"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="2dp">
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:scaleType="centerCrop"/>
+    <View
+        android:id="@+id/view_container"
+        android:layout_width="176dp"
+        android:layout_height="72dp"/>
+</RelativeLayout>

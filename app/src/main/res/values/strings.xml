@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">J-LAST</string>
+    <string-array name="lb_userpic_profile_list">
+        <item>Camera</item>
+        <item>Image Library</item>
+    </string-array>
+    <string name="default_notification_channel_id">JLast</string>
+</resources>

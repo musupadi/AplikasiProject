@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical"
+    android:background="@color/colorBackground">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_warning_big"
+        android:tint="@color/colorGrey"/>
+    <TextView
+        android:id="@+id/lb_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorGrey"
+        android:text="Sedang dalam pengembangan"/>
+</LinearLayout>

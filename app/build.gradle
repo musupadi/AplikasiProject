@@ -1,0 +1,73 @@
+buildscript {
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://github.com/500px/500px-android-blur/raw/master/releases/' }
+    maven { url 'https://maven.google.com' }
+    maven { url 'https://maven.fabric.io/public' }
+}
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId "com.tampir.jlast"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 12
+        versionName "1.0.7"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
+    compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.3'
+    compile 'com.wang.avi:library:2.1.3'
+    compile 'com.github.d-max:spots-dialog:0.7@aar'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.lyft:scissors:1.0.3'
+    compile 'io.reactivex:rxjava:1.0.15'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.alimuzaffar.lib:pinentryedittext:1.3.1'
+    testCompile 'junit:junit:4.12'
+
+    compile 'jp.wasabeef:blurry:2.0.3'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.damavandi:android-vlc-lib:1.0.1'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'

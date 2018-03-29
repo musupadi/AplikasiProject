@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#0F212F">
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/splashscreen"/>
+    <TextView
+        android:id="@+id/lbVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:textColor="#9fff"
+        android:padding="16dp"
+        android:text="Copyright 2018"/>
+</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginRight="8dp">
+                <View
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/circle_avatar"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    tools:ignore="ContentDescription"
+                    app:civ_border_color="@android:color/white"
+                    app:civ_fill_color="#999"
+                    app:civ_border_width="1dp"
+                    android:src="@drawable/jimage"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+        <TextView
+            android:id="@+id/lb_membername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#fff"
+            android:text="This is content of message"/>
+        <TextView
+            android:id="@+id/lb_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgchat_bubblewhite"
+            android:text="This is content of message"/>
+        </LinearLayout>
+</LinearLayout>

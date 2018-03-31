@@ -20,4 +20,6 @@
     <color name="colorGreenDark">#00A658</color>
     <color name="colorHomeMenu">#009FDE</color>
     <color name="colorPrimaryLightText">#1C252A</color>
+    <color name="colorBiruAsin">#88D8C7</color>
+    <color name="colorBlack">#000000</color>
 </resources>

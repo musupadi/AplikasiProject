@@ -69,8 +69,8 @@ public class Home extends BaseFragment {
     private ArrayList<cacheData> itemsAds = new ArrayList<>();
     private ArrayList<cacheData> itemsAds1 = new ArrayList<>();
     private MainAdapter adapterBanner;
-    private MainAdapter adapterAds; // Ads 4 column
-    private MainAdapter adapterAds1; // Ads 2 column
+    private MainAdapter adapterAds; // Ads 2 column
+    private MainAdapter adapterAds1; // Ads 4 column
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,6 +133,7 @@ public class Home extends BaseFragment {
             }else{
                 btnPlayPause.setVisibility(View.VISIBLE);
                 btnFullscreen.setVisibility(View.VISIBLE);
+                imgVideoThumbnail.setVisibility(View.GONE);
             }
         }else{
             btnPlayPause.setVisibility(View.GONE);
@@ -153,7 +154,7 @@ public class Home extends BaseFragment {
             @Override
             public void run() {
                 int mWidth = framePlayer.getWidth();
-                framePlayer.getLayoutParams().height = mWidth * 9/16;
+                framePlayer.getLayoutParams().height = mWidth * 9/12;
             }
         });
         framePlayer.setVisibility(View.VISIBLE);
@@ -369,11 +370,10 @@ public class Home extends BaseFragment {
 
     /**
      *
-     * Ads 4 column
+     * Ads 2 column
      *
      */
     private void showAds(){
-        Collections.shuffle(itemsAds);
         if (adapterAds==null){
             iklanlist.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
             adapterAds = new MainAdapter(itemsAds, iklanlist);
@@ -436,68 +436,76 @@ public class Home extends BaseFragment {
     }
 
     /**
-     * Ads 2 column
+     * Ads 4 column
      */
     private void showAds1() {
-        Collections.shuffle(itemsAds1);
+        iklanlist1.setVisibility(View.VISIBLE);
+        for (int i = 0; i < 4; i++) {
+            itemsAds1.add(new cacheData());
+        }
         if (adapterAds1==null){
             iklanlist1.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
             adapterAds1 = new MainAdapter(itemsAds1, iklanlist1);
             adapterAds1.setOnItemClickListener(new MainAdapter.OnItemClickListenerWithPosition() {
                 @Override
                 public void onClick(final ContentJson data, int position) {
-                    ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
-                    ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
-                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
-                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
-                    }else{
-                        if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
-                            App.contentPlayer.pushAds(data);
-
-                            itemsAds1.remove(position);
-                            adapterAds1.notifyItemRemoved(position);
-                            cacheData v = new cacheData();
-                            data.putBoolean("is_watched",true);
-                            v.setData(data);
-                            v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-                            itemsAds1.add(v);
-                        }
-                    }
+//                    ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
+//                    ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
+//                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
+//                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
+//                    }else{
+//                        if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
+//                            App.contentPlayer.pushAds(data);
+//
+//                            itemsAds1.remove(position);
+//                            adapterAds1.notifyItemRemoved(position);
+//                            cacheData v = new cacheData();
+//                            data.putBoolean("is_watched",true);
+//                            v.setData(data);
+//                            v.setStyle(MainAdapter.STYLE_LIST_ADS1);
+//                            itemsAds1.add(v);
+//                        }
+//                    }
+                    Toast.makeText(getContext(), "Launcher", Toast.LENGTH_SHORT).show();
                 }
             });
             iklanlist1.setAdapter(adapterAds1);
 
-            swipe_refresh_iklan.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    if (!adapterAds1.isLoading() && !App.contentPlayer.isInLineAds()) {
-                        fetchAds();
-                    }
-                    swipe_refresh_iklan.setRefreshing(false);
-                }
-            });
+//            swipe_refresh_iklan.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//                @Override
+//                public void onRefresh() {
+//                    if (!adapterAds1.isLoading() && !App.contentPlayer.isInLineAds()) {
+//                        fetchAds();
+//                    }
+//                    swipe_refresh_iklan.setRefreshing(false);
+//                }
+//            });
         }
 
-        itemsAds1.clear();
-        ContentJson ads = App.storage.getContent(Storage.ST_ADS);
-        if (ads==null) {
-            ContentJson config = App.storage.getData("configure").get("data");
-            int adsCount = config.getInt("jumlah_iklan");
-            for (int i=0;i<adsCount;i++) {
-                cacheData v = new cacheData();
-                v.setData(new ContentJson().putInt("color", LibFunction.getGreyRandomColor()));
-                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-                itemsAds1.add(v);
-            }
-        }else{
-            int adsCount = ads.getArraySize("data");
-            for (int i=0;i<adsCount;i++){
-                cacheData v = new cacheData();
-                v.setData(ads.get("data",i));
-                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-                itemsAds1.add(v);
-            }
+        for (int i = 0; i < itemsAds1.size(); i++) {
+            cacheData v = itemsAds1.get(i);
+            v.setStyle(MainAdapter.STYLE_LIST_ADS1);
         }
+//        itemsAds1.clear();
+//        ContentJson ads = App.storage.getContent(Storage.ST_ADS);
+//        if (ads==null) {
+//            ContentJson config = App.storage.getData("configure").get("data");
+//            int adsCount = config.getInt("jumlah_iklan");
+//            for (int i=0;i<adsCount;i++) {
+//                cacheData v = new cacheData();
+//                v.setData(new ContentJson().putInt("color", LibFunction.getGreyRandomColor()));
+//                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
+//                itemsAds1.add(v);
+//            }
+//        }else{
+//            int adsCount = ads.getArraySize("data");
+//            for (int i=0;i<adsCount;i++){
+//                cacheData v = new cacheData();
+//                v.setData(ads.get("data",i));
+//                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
+//                itemsAds1.add(v);
+//            }
+//        }
         adapterAds1.notifyDataSetChanged();
     }
 
@@ -512,7 +520,7 @@ public class Home extends BaseFragment {
                 @Override
                 public void onStart() {
                     adapterAds.setLoading(true);
-                    adapterAds1.setLoading(true);
+//                    adapterAds1.setLoading(true);
                 }
 
                 @Override
@@ -525,19 +533,19 @@ public class Home extends BaseFragment {
                             App.storage.setDataReplace(cj.getString("data"), Storage.ST_ADS);
                             lb_placeholder_iklan.setVisibility(View.GONE);
                             iklanlist.setVisibility(View.VISIBLE);
-                            iklanlist1.setVisibility(View.VISIBLE);
+//                            iklanlist1.setVisibility(View.VISIBLE);
                             showAds();
-                            showAds1();
+//                            showAds1();
                         }else{
                             App.storage.removeData(Storage.ST_ADS);
                             itemsAds.clear();
-                            itemsAds1.clear();
+//                            itemsAds1.clear();
                             adapterAds.notifyDataSetChanged();
                             adapterAds1.notifyDataSetChanged();
                             lb_placeholder_iklan.setText(cj.getString("message"));
                             lb_placeholder_iklan.setVisibility(View.VISIBLE);
                             iklanlist.setVisibility(View.GONE);
-                            iklanlist1.setVisibility(View.GONE);
+//                            iklanlist1.setVisibility(View.GONE);
                         }
                     }
                 }

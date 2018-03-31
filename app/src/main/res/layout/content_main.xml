@@ -21,7 +21,7 @@
                 android:layout_weight="1"/>
             <TabWidget
                 android:id="@android:id/tabs"
-                android:background="#dddddd"
+                android:background="@color/colorBiruAsin"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:tabStripEnabled="false"/>

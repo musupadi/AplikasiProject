@@ -501,7 +501,6 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
 
     @Override
     public void showButtonHistory() {
-        Toast.makeText(this, "HISTROT", Toast.LENGTH_SHORT).show();
         btnHistory.setVisibility(View.VISIBLE);
     }
 }

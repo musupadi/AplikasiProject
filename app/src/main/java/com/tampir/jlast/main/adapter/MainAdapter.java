@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.tampir.jlast.App;
 import com.tampir.jlast.R;
 import com.tampir.jlast.utils.ContentJson;
+import com.tampir.jlast.utils.ResourceUtils;
 import com.tampir.jlast.utils.Storage;
 import com.tampir.jlast.views.ButtonProgress;
 
@@ -82,6 +83,26 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         @Override
         public String toString() {
             return super.toString();
+        }
+    }
+
+    public class DataLauncher extends RecyclerView.ViewHolder {
+        @BindView(R.id.view_container) View container;
+        @BindView(R.id.thumbnail) ImageView thumbnail;
+        @BindView(R.id.btnBanner) View btnBanner;
+
+        public DataLauncher(View view) {
+            super(view);
+
+            ButterKnife.bind(this, view);
+        }
+
+        public void bind() {
+            container.setVisibility(View.VISIBLE);
+            Glide.with(btnBanner.getContext())
+                    .load(ResourceUtils.getImageFromDrawable("launcher_system", btnBanner.getContext()))
+                    .fitCenter()
+                    .into(thumbnail);
         }
     }
 
@@ -211,7 +232,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             return holder;
         } else if (viewType == STYLE_LIST_ADS1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_space_iklan1, parent, false);
-            DataAds holder = new DataAds(view);
+            DataLauncher holder = new DataLauncher(view);
             setupClickableViews(holder);
 
             return holder;
@@ -285,6 +306,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         mOnItemClickListenerItem.onClick(mValues.get(holder.getAdapterPosition()).getData(),0);
                 }
             });
+        }
+
+        if (any_holder instanceof DataLauncher) {
+            final DataLauncher holder = (DataLauncher) any_holder;
+            holder.bind();
         }
     }
 

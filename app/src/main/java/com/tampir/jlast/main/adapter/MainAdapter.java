@@ -109,7 +109,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public class DataAds extends RecyclerView.ViewHolder {
         @BindView(R.id.imgThumb) ImageView thumbnail;
         @BindView(R.id.btnAds) View btnAds;
-        @BindView(R.id.lb_adsname) TextView lbAds;
         @BindView(R.id.rl_iklan) RelativeLayout rlIklan;
         public DataAds(View view) {
             super(view);
@@ -366,7 +365,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             if (json.has("id")){
                 String urlfoto = json.getString("foto");
                 if (json.getBoolean("is_watched")) urlfoto = json.getString("foto_muted");
-                holder.lbAds.setText(json.getString("title"));
                 Glide.with(holder.thumbnail.getContext())
                         .load(urlfoto)
                         .fitCenter()

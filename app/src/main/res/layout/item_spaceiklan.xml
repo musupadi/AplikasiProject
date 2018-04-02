@@ -9,36 +9,36 @@
     <RelativeLayout
         android:id="@+id/btnAds"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:clickable="true">
 
         <ImageView
             android:id="@+id/imgThumb"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="fitXY" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="false"
-            android:layout_marginTop="30dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="vertical"
-            android:padding="8dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="false"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:gravity="center_vertical|center_horizontal"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="8dp">-->
 
-            <TextView
-                android:id="@+id/lb_adsname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text=""
-                android:textColor="#eee"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/lb_adsname"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:ellipsize="end"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:maxLines="1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text=""&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textColor="#eee"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="18sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
+        <!--</LinearLayout>-->
     </RelativeLayout>
 </RelativeLayout>

@@ -1,22 +1,21 @@
 package com.tampir.jlast.main.screen.home_screen;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tampir.jlast.App;
 import com.tampir.jlast.R;
-import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.main.screen.BaseFragment;
 import com.tampir.jlast.utils.ContentJson;
 import com.tampir.jlast.utils.Storage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SaldoIDR extends BaseFragment {
     View fragment;
@@ -27,7 +26,6 @@ public class SaldoIDR extends BaseFragment {
     private FragmentCallback fragmentCallback;
 
     public interface FragmentCallback {
-        void showButtonHistory();
     }
 
     @Override
@@ -39,7 +37,6 @@ public class SaldoIDR extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        fragmentCallback.showButtonHistory();
     }
 
     @Override
@@ -60,6 +57,12 @@ public class SaldoIDR extends BaseFragment {
         return fragment;
     }
 
-
-
+    @OnClick({R.id.btnHistory})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnHistory:
+                Toast.makeText(getContext(), "HISTORY", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }

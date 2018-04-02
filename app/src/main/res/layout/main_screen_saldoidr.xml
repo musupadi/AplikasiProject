@@ -4,92 +4,105 @@
     android:layout_width="match_parent"
     android:background="@color/colorBackground"
     android:layout_height="match_parent">
-<android.support.v7.widget.LinearLayoutCompat
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:padding="12dp"
-        android:layout_margin="16dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:textColor="#9000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:text="Poin Card" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/lbPoinCard"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="36sp"
-                android:maxLines="1"
-                android:text="0" />
-        </LinearLayout>
-        <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="#ddd"/>
-        <TextView
-            android:textColor="#9000"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="18sp"
-            android:maxLines="1"
-            android:text="Saldo IDR"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:orientation="horizontal">
+
+            android:padding="12dp"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
             <TextView
                 android:textColor="#9000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_gravity="top"
-                android:gravity="top"
-                android:text="Rp. " />
-            <TextView
-                android:id="@+id/lbIDR"
-                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:text="Poin Card" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="36sp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lbPoinCard"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="36sp"
+                    android:maxLines="1"
+                    android:text="0" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="#ddd"/>
+            <TextView
+                android:textColor="#9000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="18sp"
                 android:maxLines="1"
-                android:text="0,-" />
+                android:text="Saldo IDR"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+                <TextView
+                    android:textColor="#9000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:text="Rp. " />
+                <TextView
+                    android:id="@+id/lbIDR"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="36sp"
+                    android:maxLines="1"
+                    android:text="0,-" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="#ddd"/>
+            <TextView
+                android:id="@+id/lbCompare"
+                android:textColor="#999"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:text="1 Poin Card = 1 IDR" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="#ddd"/>
-        <TextView
-            android:id="@+id/lbCompare"
-            android:textColor="#999"
+
+        <Button
+            android:id="@+id/btnHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_gravity="top"
-            android:gravity="top"
-            android:text="1 Poin Card = 1 IDR" />
-    </LinearLayout>
-</android.support.v7.widget.LinearLayoutCompat>
+            android:textSize="20sp"
+            android:text="HISTORY"
+            android:background="@drawable/button_history"
+            android:textColor="@color/colorBackground"
+            android:padding="10dp"
+            android:layout_gravity="center"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
 </android.support.v4.widget.NestedScrollView>

@@ -22,10 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.tampir.jlast.App;
@@ -64,7 +62,6 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
     @BindView(R.id.btnSaldoIDR) View btnSaldoIDR;
     @BindView(R.id.tv_poin_card) TextView tvPoinCard;
     @BindView(R.id.iv_logo) ImageView logo;
-    @BindView(R.id.btnHistory) LinearLayout btnHistory;
 
     @BindView(android.R.id.tabhost) FragmentTabHost mTabHost;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
@@ -118,11 +115,11 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
                     //Drawable drawBox = ContextCompat.getDrawable(getBaseContext(), R.drawable.border_tab_white_outer);
                     if (i == mTabHost.getCurrentTab()) {
                         color = ContextCompat.getColor(getBaseContext(), R.color.colorPrimary);
-                      //  drawBox = ContextCompat.getDrawable(getBaseContext(), R.drawable.border_tab_orange_outer);
+                        //  drawBox = ContextCompat.getDrawable(getBaseContext(), R.drawable.border_tab_orange_outer);
 
-                       // box.setAlpha(0);
-                       // box.setTranslationY(LibFunction.dpToPx(4));
-                       // box.animate().translationY(0).alpha(100).setDuration(500).start();
+                        // box.setAlpha(0);
+                        // box.setTranslationY(LibFunction.dpToPx(4));
+                        // box.animate().translationY(0).alpha(100).setDuration(500).start();
                         if (i==2){
                             color = ContextCompat.getColor(getBaseContext(),R.color.colorHomeMenu);
                         }
@@ -235,7 +232,7 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
     }
 
 
-    @OnClick({R.id.btnSaldoIDR, R.id.btnHistory})
+    @OnClick({R.id.btnSaldoIDR})
     public void buttonClick(View view) {
         switch (view.getId()) {
             case R.id.btnSaldoIDR:
@@ -244,9 +241,6 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
                 if (fg!=null && infosaldo!=null){
                     fg.replaceFragment(new SaldoIDR(), true);
                 }
-                break;
-            case R.id.btnHistory:
-                Toast.makeText(this, "HISTORY", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -295,7 +289,6 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
             lbPoinCard.setText(infosaldo.getString("poin_card"));
             btnSaldoIDR.setBackground(ContextCompat.getDrawable(this, R.drawable.button_appbar));
             btnSaldoIDR.setVisibility(View.VISIBLE);
-            btnHistory.setVisibility(View.GONE);
         } else {
             btnSaldoIDR.setVisibility(View.GONE);
         }
@@ -497,10 +490,5 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
             }
         }
         return false;
-    }
-
-    @Override
-    public void showButtonHistory() {
-        btnHistory.setVisibility(View.VISIBLE);
     }
 }

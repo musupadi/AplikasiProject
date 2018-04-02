@@ -16,24 +16,15 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 android {
-    signingConfigs {
-        config {
-            keyAlias 'J-Last'
-            keyPassword 'p0o9i8u7'
-            storeFile file('/home/chongieball/FreelanceProjects/j-last.jks')
-            storePassword 'p0o9i8u7'
-        }
-    }
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.tampir.jlast"
+        applicationId "com.tampir.jlastpower"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 13
         versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.config
     }
     buildTypes {
         release {

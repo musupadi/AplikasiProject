@@ -73,7 +73,7 @@
         <Space
             android:layout_width="1dp"
             android:layout_height="8dp" />
-        <com.tampir.jlast.views.ButtonProgress
+        <com.tampir.jlastpower.views.ButtonProgress
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -84,7 +84,7 @@
         <Space
             android:layout_width="1dp"
             android:layout_height="8dp" />
-        <com.tampir.jlast.views.ButtonProgress
+        <com.tampir.jlastpower.views.ButtonProgress
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"

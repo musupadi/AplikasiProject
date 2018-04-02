@@ -38,7 +38,7 @@
                 android:layout_gravity="right|top"
                 android:background="@drawable/gradien_black_topright" />
 
-            <com.tampir.jlast.views.PlayPauseButton
+            <com.tampir.jlastpower.views.PlayPauseButton
                 android:id="@+id/play_pause"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

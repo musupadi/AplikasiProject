@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tampir.jlast">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tampir.jlastpower">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
-        android:name=".App"
+        android:name="com.tampir.jlastpower.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +24,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
         <activity
-            android:name=".activity.Flashscreen"
+            android:name="com.tampir.jlastpower.activity.Flashscreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Transparent">
             <intent-filter>
@@ -33,49 +33,49 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.Login"
+            android:name="com.tampir.jlastpower.activity.Login"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Transparent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".activity.Registrasi"
+            android:name="com.tampir.jlastpower.activity.Registrasi"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Transparent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".activity.Main"
+            android:name="com.tampir.jlastpower.activity.Main"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".activity.VideoPlayer"
+            android:name="com.tampir.jlastpower.activity.VideoPlayer"
             android:exported="true"
             android:label="Player"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.NoActionBar.Transparent" />
-        <activity android:name=".activity.CropPicture" android:label="Crop" android:screenOrientation="portrait"/>
-        <service android:name=".appService" />
-        <service android:name=".UploadFoto"/>
+        <activity android:name="com.tampir.jlastpower.activity.CropPicture" android:label="Crop" android:screenOrientation="portrait"/>
+        <service android:name="com.tampir.jlastpower.appService" />
+        <service android:name="com.tampir.jlastpower.UploadFoto"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2483a6498c91d2484b6bf1f4ec24b072a80dc2c5" />
         <service
-            android:name=".firebase.MyFirebaseMessagingService">
+            android:name="com.tampir.jlastpower.firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name=".firebase.MyFirebaseInstanceIDService">
+            android:name="com.tampir.jlastpower.firebase.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name=".firebase.MyJobService"
+        <service android:name="com.tampir.jlastpower.firebase.MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>

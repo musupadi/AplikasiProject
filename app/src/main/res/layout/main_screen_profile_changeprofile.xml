@@ -119,7 +119,7 @@
             <android.support.v4.widget.Space
                 android:layout_width="1dp"
                 android:layout_height="16dp" />
-            <com.tampir.jlastpower.views.ButtonProgress
+            <com.tampir.jlast.views.ButtonProgress
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

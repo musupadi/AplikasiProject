@@ -31,7 +31,7 @@
     app:pinLineStroke="1dp"
     app:pinLineStrokeSelected="1dp"
     app:pinLineColors="@color/colorPrimary" />
-<com.tampir.jlastpower.views.ButtonProgress
+<com.tampir.jlast.views.ButtonProgress
     android:id="@+id/btnReSendSms"
     android:layout_marginTop="12dp"
     android:layout_width="match_parent"

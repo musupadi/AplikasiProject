@@ -17,5 +17,22 @@
             android:text="Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/et_nohp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Masukkan No HP Anda"
+            android:layout_gravity="center"
+            android:inputType="number"/>
+
+        <com.tampir.jlast.views.ButtonProgress
+            android:id="@+id/btnBuy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:text="BELI"
+            android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

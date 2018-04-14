@@ -408,6 +408,7 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
     @Override
     public void onResume() {
         super.onResume();
+        fetchPoinInfo();
     }
 
     @Override

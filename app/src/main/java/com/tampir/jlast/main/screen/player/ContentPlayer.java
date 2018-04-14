@@ -29,11 +29,14 @@ import butterknife.ButterKnife;
 
 
 public class ContentPlayer extends Fragment {
+    private final String TAG = getClass().getSimpleName();
+
     private View fragment;
     private ControlPlayer player;
     private String currVideoId="";
     private String currUrl="";
     private params param;
+    private boolean isContinues;
 
     @BindView(R.id.thumb) public ImageView thumbnail;
     @BindView(R.id.progressBar) public ProgressBar progress;
@@ -54,7 +57,15 @@ public class ContentPlayer extends Fragment {
     }
 
     private void initPlayer(){
-        release();
+        player = new VideoPlayer();
+        player.setVideoId(param.getVideoid());
+        player.setVideoUrl(param.getUrl());
+        player.getView((FrameLayout) fragment.findViewById(R.id.surface));
+
+        if (!isContinues) {
+            release();
+        }
+
 
         thumbnail.setVisibility(View.VISIBLE);
         progress.setVisibility(View.VISIBLE);
@@ -76,12 +87,6 @@ public class ContentPlayer extends Fragment {
                     .into(thumbnail);
         }
 
-        player = new VideoPlayer();
-
-        player.setVideoId(param.getVideoid());
-        player.setVideoUrl(param.getUrl());
-
-        player.getView((FrameLayout) fragment.findViewById(R.id.surface));
     }
 
     public ContentPlayer setParams(params param){
@@ -92,7 +97,8 @@ public class ContentPlayer extends Fragment {
         return param;
     }
 
-    public ContentPlayer setup(){
+    public ContentPlayer setup(final boolean isContinue){
+        this.isContinues = isContinue;
         if(BuildConfig.BUILD_TYPE == "debug") Log.e(Const.TAG,"Player: Setup");
         if (param==null) return this;
 
@@ -134,7 +140,9 @@ public class ContentPlayer extends Fragment {
         player.setOnVideoEndedListener(new ControlPlayer.OnVideoEndedListener() {
             @Override
             public void OnVideoEnded() {
-                thumbnail.setVisibility(View.VISIBLE);
+                if (!isContinues) {
+                    thumbnail.setVisibility(View.VISIBLE);
+                }
                 if (status_listener!=null) status_listener.OnVideoEnded();
             }
             @Override

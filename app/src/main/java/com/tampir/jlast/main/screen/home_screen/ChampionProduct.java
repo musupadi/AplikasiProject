@@ -66,7 +66,6 @@ public class ChampionProduct extends BaseFragment {
     private void setupViewPager(ViewPager viewPager) {
         adapterChampion = new AdapterChampion(getChildFragmentManager());
         adapterChampion.addFragment(new ChampionProductBuy(), "Beli Produk");
-        adapterChampion.addFragment(new ChampionProductMe(), "Penukaran");
         viewPager.setAdapter(adapterChampion);
     }
 

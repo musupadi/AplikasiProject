@@ -150,7 +150,6 @@ public class VideoPlayer extends ControlPlayer{
                         break;
                     case MediaPlayer.Event.MediaChanged:
                         if(BuildConfig.BUILD_TYPE == "debug") Log.d(Const.TAG, "onEvent: MediaChanged");
-                        mOnVideoLoadedListener.OnVideoLoaded();
                         mMediaPlayer_cinema.play();
                         break;
                     case MediaPlayer.Event.Opening:

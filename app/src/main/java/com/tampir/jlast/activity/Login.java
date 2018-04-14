@@ -23,6 +23,7 @@ import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.Interface;
 import com.tampir.jlast.utils.LibFunction;
 import com.tampir.jlast.utils.ParameterHttpPost;
+import com.tampir.jlast.utils.StreamingVideo;
 import com.tampir.jlast.views.ButtonProgress;
 
 import butterknife.BindView;
@@ -42,6 +43,9 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        StreamingVideo.callApiVideo();
+
         ButterKnife.bind(this);
         btnLogin.setEnabled(false);
         inputUsername.addTextChangedListener(textWatcher);
@@ -106,7 +110,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void OnAdsVideoBuffered() {}
         });
-        loginPlayer.setParams(params).setup();
+        loginPlayer.setParams(params).setup(true);
         loginPlayer.play();
     }
 

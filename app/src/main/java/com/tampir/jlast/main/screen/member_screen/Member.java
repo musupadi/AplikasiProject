@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tampir.jlast.R;
+import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.main.screen.BaseChildFragment;
 import com.tampir.jlast.main.screen.BaseContainerFragment;
 import com.tampir.jlast.main.screen.BaseFragment;
@@ -59,6 +60,12 @@ public class Member extends BaseFragment {
             });
         }
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((Main) getActivity()).fetchPoinInfo();
     }
 
     @Override

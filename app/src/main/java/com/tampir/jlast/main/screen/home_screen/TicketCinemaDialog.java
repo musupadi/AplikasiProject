@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.tampir.jlast.utils.General;
 import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.ParameterHttpPost;
 import com.tampir.jlast.utils.Storage;
+import com.tampir.jlast.views.SimpleProgressDialog;
 
 import java.util.ArrayList;
 
@@ -32,11 +35,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TicketCinemaDialog extends DialogFragment {
+    private static final String TAG = TicketCinemaDialog.class.getSimpleName();
     View fragment;
     @BindView(R.id.btnClose) View btnClose;
 
     private ArrayList<cacheData> items = new ArrayList<cacheData>();
     private MainAdapter adapter;
+    private SimpleProgressDialog simpleProgressDialog;
+
 
     HttpConnection.Task mAuthTask = null;
     @BindView(R.id.ls_item) RecyclerView recyclerView;
@@ -70,6 +76,7 @@ public class TicketCinemaDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         fragment = inflater.inflate(R.layout.dialog_ticketcinema, container, false);
         ButterKnife.bind(this,fragment);
+        simpleProgressDialog = new SimpleProgressDialog(getActivity(), "Please Wait");
         setupRecyclerView();
         return fragment;
     }
@@ -84,6 +91,7 @@ public class TicketCinemaDialog extends DialogFragment {
         adapter.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
             @Override
             public void onClick(final ContentJson data) {
+                simpleProgressDialog.isCancelable(false).show();
                 ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
                 ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
                 if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {

@@ -131,6 +131,7 @@ public class Qrcode extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((Main) getActivity()).fetchPoinInfo();
         qrCodeReaderView.startCamera();
     }
 

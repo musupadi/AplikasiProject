@@ -32,6 +32,7 @@ import com.tampir.jlast.App;
 import com.tampir.jlast.BuildConfig;
 import com.tampir.jlast.R;
 import com.tampir.jlast.activity.CropPicture;
+import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.main.screen.BaseContainerFragment;
 import com.tampir.jlast.main.screen.BaseFragment;
 import com.tampir.jlast.main.screen.home_screen.BrowseHttp;
@@ -332,6 +333,7 @@ public class Profile extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((Main) getActivity()).fetchPoinInfo();
         if (App.storage.getContent("is_updateuser")!=null) {
             //showProfile();
             fetchProfile();

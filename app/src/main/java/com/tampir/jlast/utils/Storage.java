@@ -70,6 +70,7 @@ public class Storage {
     public static final String ST_SALDOMEMBER= "saldo_member";
     public static final String ST_ADS= "iklan";
     public static final String ST_CONFIG = "configure";
+    public static final String ST_VIDEO = "video";
 
     /* PRIVATE MESSAGE */
     public void saveChat(String content,ContentJson member){

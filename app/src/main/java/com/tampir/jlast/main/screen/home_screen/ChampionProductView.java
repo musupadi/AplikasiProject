@@ -1,7 +1,7 @@
 package com.tampir.jlast.main.screen.home_screen;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +30,7 @@ import com.tampir.jlast.utils.General;
 import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.ParameterHttpPost;
 import com.tampir.jlast.utils.ProvidersUtils;
+import com.tampir.jlast.utils.Storage;
 import com.tampir.jlast.views.ButtonProgress;
 
 import java.util.ArrayList;
@@ -40,7 +41,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
 
+import static java.lang.Integer.parseInt;
+
 public class ChampionProductView extends BaseFragment {
+    private static final String TAG = ChampionProductView.class.getSimpleName();
+
     View fragment;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.imgThumb) ImageView imgThumb;
@@ -182,9 +187,12 @@ public class ChampionProductView extends BaseFragment {
     private void setupViewPager(ViewPager viewPager) {
         ContentJson Product = new ContentJson(getArguments().getString("product", ""));
         AdapterProduct adapterProduct = new AdapterProduct(getChildFragmentManager());
-        adapterProduct.addFragment(infoproduct.text(Product.getString("overview")), "Overview");
-        adapterProduct.addFragment(infoproduct.text(Product.getString("how_to_use")), "How to Use");
-        adapterProduct.addFragment(infoproduct.text(Product.getString("tc")), "T &  C");
+        adapterProduct.addFragment(infoproduct.text(Product.getString("overview"), "overview"),
+                "Overview");
+        adapterProduct.addFragment(infoproduct.text(Product.getString("how_to_use"), "how to use"),
+                "How to Use");
+        adapterProduct.addFragment(infoproduct.text(Product.getString("tc"), "tc"),
+                "T &  C");
         viewPager.setAdapter(adapterProduct);
     }
 
@@ -220,13 +228,15 @@ public class ChampionProductView extends BaseFragment {
 
         @BindView(R.id.lb_text) TextView lbText;
         @BindView(R.id.et_nohp) EditText noHp;
+        @BindView(R.id.btnBuy) ButtonProgress beli;
 
-        SpotsDialog pdialog;
+        SpotsDialog pdialogInfo;
 
-        public static infoproduct text(String text) {
+        public static infoproduct text(String text, String title) {
             infoproduct fg = new infoproduct();
             Bundle bundle = new Bundle();
             bundle.putString("text", text);
+            bundle.putString("title", title);
             fg.setArguments(bundle);
             return fg;
         }
@@ -236,7 +246,16 @@ public class ChampionProductView extends BaseFragment {
             View rootView = inflater.inflate(R.layout.item_text_html, container, false);
             ButterKnife.bind(this, rootView);
             lbText.setText(getArguments().getString("text", ""));
-            pdialog = new SpotsDialog(getContext());
+
+            if (!getArguments().getString("title").equals("overview")) {
+                noHp.setVisibility(View.GONE);
+                beli.setVisibility(View.GONE);
+            }
+            pdialogInfo = new SpotsDialog(getContext(), false, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                }
+            });
             return rootView;
         }
 
@@ -253,37 +272,44 @@ public class ChampionProductView extends BaseFragment {
                                     Toast.makeText(getContext(), "No Hp Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                            ContentJson user = App.storage.getCurrentUser();
-                            String isiPulsaParam = new ParameterHttpPost()
-                                    .val("request_id", ProvidersUtils.getRequestID(user.getString("ktp")))
-                                    .val("no_hp", noHp.getText().toString())//no hp
-                                    .val("kode_pulsa", ProvidersUtils.getKodePulsa(data.getString("brand")))
-                                    .build();
-                            HttpConnection.Task authTask = new HttpConnection.Task(HttpConnection.METHOD_POST, "topuprequest",
-                                    isiPulsaParam, new HttpConnection.OnTaskFinishListener() {
-                                @Override
-                                public void onStart() {
-                                    pdialog.show();
+
+                                ContentJson user = App.storage.getCurrentUser();
+                                ContentJson saldo = App.storage.getData(Storage.ST_SALDOMEMBER);
+
+                                if (parseInt(saldo.getString("poin_card")) < 1000) {
+                                    Toast.makeText(getContext(), "Point Tidak Cukup", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
 
-                                @Override
-                                public void onFinished(String jsonString, HttpConnection.Error err) {
-                                    if (err == null) {
-                                        ContentJson cj = new ContentJson(jsonString);
-                                        if (cj.getInt("status") == 1) {
-                                            //call method claim product
-                                            claimProduct(data);
-                                        } else {
-                                            pdialog.dismiss();
-                                            Toast.makeText(getContext(), cj.getString("message"), Toast.LENGTH_SHORT).show();
-                                        }
-                                    } else {
-                                        pdialog.dismiss();
-                                        Toast.makeText(getContext(), err.Message, Toast.LENGTH_SHORT).show();
+                                String isiPulsaParam = new ParameterHttpPost()
+                                        .val("request_id", ProvidersUtils.getRequestID(user.getString("ktp")))
+                                        .val("no_hp", noHp.getText().toString())//no hp
+                                        .val("kode_pulsa", ProvidersUtils.getKodePulsa(data.getString("brand")))
+                                        .build();
+                                HttpConnection.Task authTask = new HttpConnection.Task(HttpConnection.METHOD_POST, "topuprequest",
+                                        isiPulsaParam, new HttpConnection.OnTaskFinishListener() {
+                                    @Override
+                                    public void onStart() {
+                                        pdialogInfo.show();
                                     }
-                                }
-                            });
-                            authTask.execute();
+
+                                    @Override
+                                    public void onFinished(String jsonString, HttpConnection.Error err) {
+                                        if (err == null) {
+                                            ContentJson cj = new ContentJson(jsonString);
+                                            if (cj.getInt("status") == 1) {
+                                                topUp(data);
+                                            } else {
+                                                pdialogInfo.dismiss();
+                                                Toast.makeText(getContext(), cj.getString("message"), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            pdialogInfo.dismiss();
+                                            Toast.makeText(getContext(), err.Message, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                authTask.execute();
                             }
                         }
                     });
@@ -291,7 +317,7 @@ public class ChampionProductView extends BaseFragment {
             }
         }
 
-        private void claimProduct(ContentJson data) {
+        private void topUp(ContentJson data) {
             ContentJson user = App.storage.getCurrentUser();
             String urlParameters = new ParameterHttpPost()
                     .val("id", user.getString("id"))
@@ -302,13 +328,12 @@ public class ChampionProductView extends BaseFragment {
                     urlParameters, new HttpConnection.OnTaskFinishListener() {
                 @Override
                 public void onStart() {
-
                 }
 
                 @Override
                 public void onFinished(String jsonString, HttpConnection.Error err) {
-                    pdialog.dismiss();
                     if (err == null) {
+                        pdialogInfo.dismiss();
                         ContentJson cj = new ContentJson(jsonString);
                         if (cj.getInt("status") == 1) {
                             General.alertOK(cj.getString("message"), getContext(), new General.OnButtonClick() {

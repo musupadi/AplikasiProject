@@ -169,7 +169,7 @@ public class VideoPlayer extends FragmentActivity {
             @Override
             public void OnGetVideoQuality(String quality, String[] available) {}
         });
-        App.contentPlayer.setParams(params).setup();
+        App.contentPlayer.setParams(params).setup(true);
 
         Progress.show();
         Thumbnail.setVisibility(View.VISIBLE);

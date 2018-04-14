@@ -6,4 +6,27 @@
     <dimen name="dialogbox_width">300dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="paddingMedium">12dp</dimen>
+
+    <!-- text -->
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_form">13sp</dimen>
+    <dimen name="text_medium">14sp</dimen>
+    <dimen name="text_large">16sp</dimen>
+    <dimen name="text_extra_large">32sp</dimen>
+    <dimen name="textMedium">20sp</dimen>
+    <dimen name="textExtraMedium">30sp</dimen>
+    <dimen name="textExtraLarge">60sp</dimen>
+
+    <!-- padding -->
+    <dimen name="paddingSmall">4dp</dimen>
+    <dimen name="paddingLarge">16dp</dimen>
+    <dimen name="paddingFab">24dp</dimen>
+    <dimen name="paddingExtraLarge">32dp</dimen>
+
+    <!-- space -->
+    <dimen name="spaceSmall">10dp</dimen>
+    <dimen name="spaceMedium">20dp</dimen>
+    <dimen name="spaceExtraMedium">35dp</dimen>
+    <dimen name="spaceLarge">40dp</dimen>
+    <dimen name="spaceMinusMedium">-30dp</dimen>
 </resources>

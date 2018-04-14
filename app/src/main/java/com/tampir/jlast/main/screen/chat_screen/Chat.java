@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tampir.jlast.App;
 import com.tampir.jlast.R;
+import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.main.adapter.ChatAdapter;
 import com.tampir.jlast.main.adapter.cacheData;
 import com.tampir.jlast.main.screen.BaseContainerFragment;
@@ -241,6 +242,7 @@ public class Chat extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((Main) getActivity()).fetchPoinInfo();
         IntentFilter intentFilter = new IntentFilter("com.tampir.jlast.main.screen.chat_screen.Chat");
         getActivity().registerReceiver(chatReceive, intentFilter);
         FirebaseMessaging.getInstance().subscribeToTopic("chatroom");

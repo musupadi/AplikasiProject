@@ -100,12 +100,12 @@ public class ChampionProductBuy extends BaseChildFragment {
 //                                mAuthTask = new HttpConnection.Task(HttpConnection.METHOD_POST, "ClaimProduct", urlParameters, new HttpConnection.OnTaskFinishListener() {
 //                                    @Override
 //                                    public void onStart() {
-//                                        pdialog.show();
+//                                        pdialogInfo.show();
 //                                    }
 //
 //                                    @Override
 //                                    public void onFinished(String jsonString, HttpConnection.Error err) {
-//                                        pdialog.dismiss();
+//                                        pdialogInfo.dismiss();
 //                                        if (err == null) {
 //                                            ContentJson cj = new ContentJson(jsonString);
 //                                            if (cj.getInt("status") == 1) {

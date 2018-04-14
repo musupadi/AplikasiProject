@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.LibFunction;
 import com.tampir.jlast.utils.ParameterHttpPost;
 import com.tampir.jlast.utils.Storage;
+import com.tampir.jlast.utils.StreamingVideo;
 import com.tampir.jlast.views.PlayPauseButton;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Home extends BaseFragment {
+    private final String TAG = getClass().getSimpleName();
+
     View fragment;
     @BindView(R.id.running_text) RecyclerView running_text;
     private RunningTextAdapter adapterRunningText;
@@ -66,17 +70,19 @@ public class Home extends BaseFragment {
 
     private ArrayList<cacheData> itemsBanner = new ArrayList<>();
     private ArrayList<cacheData> itemsAds = new ArrayList<>();
-    private ArrayList<cacheData> itemsAds1 = new ArrayList<>();
     private MainAdapter adapterBanner;
     private MainAdapter adapterAds; // Ads 2 column
-    private MainAdapter adapterAds1; // Ads 4 column
+    private int indexVideo = 0;
+    private ContentJson dataVideo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StreamingVideo.callApiVideo();
         if (fragment==null){
             fragment = inflater.inflate(R.layout.main_screen_home, null);
             ButterKnife.bind(this,fragment);
+
             if (App.contentPlayer!=null){
                 movePlayerToHome();
                 btnPlayPause.setClickable(true);
@@ -99,7 +105,6 @@ public class Home extends BaseFragment {
             showBanner();
             fetchBanner();
             showAds();
-//            showAds1();
             fetchAds();
         }
         return fragment;
@@ -167,23 +172,44 @@ public class Home extends BaseFragment {
                 .error(R.drawable.localdefault)
                 .into(imgVideoThumbnail);
 
+        dataVideo = App.storage.getContent(Storage.ST_VIDEO);
+
         //setup
-        ContentPlayer.params params = new ContentPlayer.params();
-        params.setUrl(configure.getString("streaming_url"));
+        final ContentPlayer.params params = new ContentPlayer.params();
+
+        params.setUrl(dataVideo.get("data", indexVideo).getString("video_link"));
         params.setThumbnail(configure.getString("streaming_url_placeholder"));
         params.setOnVideoStatusListener(new ContentPlayer.params.OnVideoStatusListener() {
             @Override
             public void OnVideoLoaded() {
+                StreamingVideo.callApiVideo();
                 btnPlayPause.setPause();
-                if (configure.getInt("streaming_autoplay")==1) App.contentPlayer.play();
+                if (params.getUrl().equals(dataVideo.get("data", indexVideo
+                ).getString("video_link"))) {
+                    App.contentPlayer.play();
+                }
 
             }
             @Override
             public void OnVideoEnded() {
-                btnPlayPause.setPause();
+                StreamingVideo.callApiVideo();
+                if (params.getUrl().equals(dataVideo.get("data", indexVideo
+                ).getString("video_link"))) {
+                    if (indexVideo < dataVideo.getArraySize("data") - 1) {
+                        indexVideo++;
+                    } else {
+                        indexVideo = 0;
+                    }
+                    params.setUrl(dataVideo.get("data", indexVideo).getString("video_link"));
+                    App.contentPlayer.setParams(params).setup(true);
+                    App.contentPlayer.play();
+                } else {
+                    btnPlayPause.setPause();
+                }
             }
             @Override
             public void OnVideoPaused() {
+                App.contentPlayer.pause();
                 btnPlayPause.setPause();
             }
             @Override
@@ -207,6 +233,7 @@ public class Home extends BaseFragment {
             public void OnAdsVideoPaused() {}
             @Override
             public void OnAdsVideoPlayed() {
+                StreamingVideo.callApiVideo();
                 btnPlayPause.setVisibility(View.GONE);
                 btnFullscreen.setVisibility(View.GONE);
             }
@@ -223,7 +250,7 @@ public class Home extends BaseFragment {
             @Override
             public void OnGetVideoQuality(String quality, String[] available) {}
         });
-        App.contentPlayer.setParams(params).setup();
+        App.contentPlayer.setParams(params).setup(true);
         App.contentPlayer.play();
     }
 
@@ -301,6 +328,7 @@ public class Home extends BaseFragment {
                 @Override
                 public void onClick(final ContentJson data) {
                     if (data.has("action")) {
+                        App.contentPlayer.pause();
                         if (!data.getString("action").matches("")) {
                             String action = data.getString("action");
                             if (action.matches("app://champion-product")) {
@@ -381,9 +409,9 @@ public class Home extends BaseFragment {
                 public void onClick(final ContentJson data, int position) {
                     ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
                     ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
-                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
-                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
-                    }else{
+//                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
+//                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
+//                    }else{
                         if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
                             App.contentPlayer.pushAds(data);
 
@@ -395,7 +423,7 @@ public class Home extends BaseFragment {
                             v.setStyle(MainAdapter.STYLE_LIST_ADS);
                             itemsAds.add(v);
                         }
-                    }
+//                    }
                 }
             });
             iklanlist.setAdapter(adapterAds);
@@ -434,80 +462,6 @@ public class Home extends BaseFragment {
         adapterAds.notifyDataSetChanged();
     }
 
-    /**
-     * Ads 4 column
-     */
-    private void showAds1() {
-        iklanlist1.setVisibility(View.VISIBLE);
-        for (int i = 0; i < 4; i++) {
-            itemsAds1.add(new cacheData());
-        }
-        if (adapterAds1==null){
-            iklanlist1.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-            adapterAds1 = new MainAdapter(itemsAds1, iklanlist1);
-            adapterAds1.setOnItemClickListener(new MainAdapter.OnItemClickListenerWithPosition() {
-                @Override
-                public void onClick(final ContentJson data, int position) {
-//                    ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
-//                    ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
-//                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
-//                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
-//                    }else{
-//                        if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
-//                            App.contentPlayer.pushAds(data);
-//
-//                            itemsAds1.remove(position);
-//                            adapterAds1.notifyItemRemoved(position);
-//                            cacheData v = new cacheData();
-//                            data.putBoolean("is_watched",true);
-//                            v.setData(data);
-//                            v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-//                            itemsAds1.add(v);
-//                        }
-//                    }
-                    Toast.makeText(getContext(), "Launcher", Toast.LENGTH_SHORT).show();
-                }
-            });
-            iklanlist1.setAdapter(adapterAds1);
-
-//            swipe_refresh_iklan.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//                @Override
-//                public void onRefresh() {
-//                    if (!adapterAds1.isLoading() && !App.contentPlayer.isInLineAds()) {
-//                        fetchAds();
-//                    }
-//                    swipe_refresh_iklan.setRefreshing(false);
-//                }
-//            });
-        }
-
-        for (int i = 0; i < itemsAds1.size(); i++) {
-            cacheData v = itemsAds1.get(i);
-            v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-        }
-//        itemsAds1.clear();
-//        ContentJson ads = App.storage.getContent(Storage.ST_ADS);
-//        if (ads==null) {
-//            ContentJson config = App.storage.getData("configure").get("data");
-//            int adsCount = config.getInt("jumlah_iklan");
-//            for (int i=0;i<adsCount;i++) {
-//                cacheData v = new cacheData();
-//                v.setData(new ContentJson().putInt("color", LibFunction.getGreyRandomColor()));
-//                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-//                itemsAds1.add(v);
-//            }
-//        }else{
-//            int adsCount = ads.getArraySize("data");
-//            for (int i=0;i<adsCount;i++){
-//                cacheData v = new cacheData();
-//                v.setData(ads.get("data",i));
-//                v.setStyle(MainAdapter.STYLE_LIST_ADS1);
-//                itemsAds1.add(v);
-//            }
-//        }
-        adapterAds1.notifyDataSetChanged();
-    }
-
     private void fetchAds(){
         ContentJson user = App.storage.getCurrentUser();
         if (user != null && Connectivity.isConnected(getContext())) {
@@ -519,32 +473,25 @@ public class Home extends BaseFragment {
                 @Override
                 public void onStart() {
                     adapterAds.setLoading(true);
-//                    adapterAds1.setLoading(true);
                 }
 
                 @Override
                 public void onFinished(String jsonString, HttpConnection.Error err) {
                     adapterAds.setLoading(false);
-//                    adapterAds1.setLoading(false);
                     if (err == null) {
                         ContentJson cj = new ContentJson(jsonString);
                         if (cj.getInt("status") == 1) {
                             App.storage.setDataReplace(cj.getString("data"), Storage.ST_ADS);
                             lb_placeholder_iklan.setVisibility(View.GONE);
                             iklanlist.setVisibility(View.VISIBLE);
-//                            iklanlist1.setVisibility(View.VISIBLE);
                             showAds();
-//                            showAds1();
                         }else{
                             App.storage.removeData(Storage.ST_ADS);
                             itemsAds.clear();
-//                            itemsAds1.clear();
                             adapterAds.notifyDataSetChanged();
-//                            adapterAds1.notifyDataSetChanged();
                             lb_placeholder_iklan.setText(cj.getString("message"));
                             lb_placeholder_iklan.setVisibility(View.VISIBLE);
                             iklanlist.setVisibility(View.GONE);
-//                            iklanlist1.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -573,6 +520,8 @@ public class Home extends BaseFragment {
         super.onResume();
         pageReset();
 
+        StreamingVideo.callApiVideo();
+
         if (App.contentPlayer!=null) {
             ViewGroup parent = (ViewGroup) App.contentPlayer.getView().getParent();
             if (parent != null) {
@@ -589,6 +538,7 @@ public class Home extends BaseFragment {
     public void onPause() {
         super.onPause();
         if (App.contentPlayer.isPlayingAds()) App.contentPlayer.pause();
+        App.contentPlayer.pause();
     }
 
 

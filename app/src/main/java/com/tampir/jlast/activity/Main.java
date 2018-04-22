@@ -310,7 +310,7 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
         General.alertGreetSuccess(this);
     }
 
-    public void setAdsWatched(ContentJson data){
+    public void setAdsWatched(final ContentJson data){
         ContentJson user = App.storage.getCurrentUser();
         String urlParameters = new ParameterHttpPost()
                 .val("id", user.getString("id"))
@@ -330,8 +330,29 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
                     if (cj.getInt("status") == 1) {
                         General.alertOK(cj.getString("message"),Main.this);
                         fetchPoinInfo();
+                        setAdvertiserHistory(data);
                     }
                 }
+            }
+        }).execute();
+    }
+
+    private void setAdvertiserHistory(ContentJson data) {
+        ContentJson user = App.storage.getCurrentUser();
+        String urlParameters = new ParameterHttpPost()
+                .val("id_member", user.getString("id"))
+                .val("id_ads", data.getString("id"))
+                .val("watched_duration", data.getInt("duration"))
+                .build();
+
+        new HttpConnection.Task(HttpConnection.METHOD_POST, "addhistoryadvertiser", urlParameters, new HttpConnection.OnTaskFinishListener() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onFinished(String jsonString, HttpConnection.Error err) {
+
             }
         }).execute();
     }

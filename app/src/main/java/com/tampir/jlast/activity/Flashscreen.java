@@ -18,7 +18,7 @@ import com.tampir.jlast.utils.ContentJson;
 import com.tampir.jlast.utils.General;
 import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.Storage;
-import com.tampir.jlast.utils.StreamingVideo;
+import com.tampir.jlast.utils.ApiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +38,8 @@ public class Flashscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
 
-        StreamingVideo.callApiVideo();
+        ApiUtils.callApiVideo();
+        ApiUtils.callApiRunningBanner();
         ButterKnife.bind(this);
         if (  //request permission >= Mashalow
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||

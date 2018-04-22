@@ -91,7 +91,6 @@ public class TicketCinemaDialog extends DialogFragment {
         adapter.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
             @Override
             public void onClick(final ContentJson data) {
-                simpleProgressDialog.isCancelable(false).show();
                 ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
                 ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
                 if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {

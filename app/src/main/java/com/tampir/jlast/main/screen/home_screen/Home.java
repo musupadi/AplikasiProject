@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tampir.jlast.App;
@@ -23,12 +23,11 @@ import com.tampir.jlast.R;
 import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.activity.VideoPlayer;
 import com.tampir.jlast.main.adapter.MainAdapter;
-import com.tampir.jlast.main.adapter.RunningTextAdapter;
+import com.tampir.jlast.main.adapter.RunningBannerAdapter;
 import com.tampir.jlast.main.adapter.cacheData;
 import com.tampir.jlast.main.screen.BaseContainerFragment;
 import com.tampir.jlast.main.screen.BaseFragment;
 import com.tampir.jlast.main.screen.player.ContentPlayer;
-import com.tampir.jlast.utils.AdsRunningText;
 import com.tampir.jlast.utils.Connectivity;
 import com.tampir.jlast.utils.Const;
 import com.tampir.jlast.utils.ContentJson;
@@ -37,8 +36,12 @@ import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.LibFunction;
 import com.tampir.jlast.utils.ParameterHttpPost;
 import com.tampir.jlast.utils.Storage;
-import com.tampir.jlast.utils.StreamingVideo;
+import com.tampir.jlast.utils.ApiUtils;
 import com.tampir.jlast.views.PlayPauseButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +54,8 @@ public class Home extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
 
     View fragment;
-    @BindView(R.id.running_text) RecyclerView running_text;
-    private RunningTextAdapter adapterRunningText;
+    @BindView(R.id.runningbanner) RecyclerView runningBanner;
+    private RunningBannerAdapter runningBannerAdapter;
     private Handler handlerRunningAds = new Handler();
 
     @BindView(R.id.framePlayer) FrameLayout framePlayer;
@@ -70,15 +73,23 @@ public class Home extends BaseFragment {
 
     private ArrayList<cacheData> itemsBanner = new ArrayList<>();
     private ArrayList<cacheData> itemsAds = new ArrayList<>();
+    private List<String> runningBannerList = new ArrayList<>();
     private MainAdapter adapterBanner;
     private MainAdapter adapterAds; // Ads 2 column
     private int indexVideo = 0;
     private ContentJson dataVideo;
+    private ContentJson dataRunningBanner;
+
+    private LinearSmoothScroller smoothScroller;
+
+    private int fixBanner = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StreamingVideo.callApiVideo();
+        ApiUtils.callApiVideo();
+        ApiUtils.callApiRunningBanner();
+
         if (fragment==null){
             fragment = inflater.inflate(R.layout.main_screen_home, null);
             ButterKnife.bind(this,fragment);
@@ -98,7 +109,10 @@ public class Home extends BaseFragment {
                 });
             }
 
-            showRunningText();
+            try {
+                showRunningBanner();
+            } catch (JSONException e) {
+            }
             showSaldoIDR();
             fetchPoinInfo();
 
@@ -135,7 +149,7 @@ public class Home extends BaseFragment {
                 btnPlayPause.setVisibility(View.GONE);
                 btnFullscreen.setVisibility(View.GONE);
             }else{
-                btnPlayPause.setVisibility(View.VISIBLE);
+//                btnPlayPause.setVisibility(View.VISIBLE);
                 btnFullscreen.setVisibility(View.VISIBLE);
                 imgVideoThumbnail.setVisibility(View.GONE);
             }
@@ -154,13 +168,13 @@ public class Home extends BaseFragment {
             parent.removeView(App.contentPlayer.getView());
         }
         framePlayer.addView(App.contentPlayer.getView(),0);
-        framePlayer.post(new Runnable() {
-            @Override
-            public void run() {
-                int mWidth = framePlayer.getWidth();
-                framePlayer.getLayoutParams().height = mWidth * 9/12;
-            }
-        });
+//        framePlayer.post(new Runnable() {
+//            @Override
+//            public void run() {
+////                int mWidth = framePlayer.getWidth();
+////                framePlayer.getLayoutParams().height = mWidth * 9/12;
+//            }
+//        });
         framePlayer.setVisibility(View.VISIBLE);
         showPlayer();
 
@@ -182,8 +196,8 @@ public class Home extends BaseFragment {
         params.setOnVideoStatusListener(new ContentPlayer.params.OnVideoStatusListener() {
             @Override
             public void OnVideoLoaded() {
-                StreamingVideo.callApiVideo();
-                btnPlayPause.setPause();
+                ApiUtils.callApiVideo();
+                btnPlayPause.setVisibility(View.GONE);
                 if (params.getUrl().equals(dataVideo.get("data", indexVideo
                 ).getString("video_link"))) {
                     App.contentPlayer.play();
@@ -192,7 +206,8 @@ public class Home extends BaseFragment {
             }
             @Override
             public void OnVideoEnded() {
-                StreamingVideo.callApiVideo();
+//                btnPlayPause.setPause();
+                ApiUtils.callApiVideo();
                 if (params.getUrl().equals(dataVideo.get("data", indexVideo
                 ).getString("video_link"))) {
                     if (indexVideo < dataVideo.getArraySize("data") - 1) {
@@ -203,18 +218,16 @@ public class Home extends BaseFragment {
                     params.setUrl(dataVideo.get("data", indexVideo).getString("video_link"));
                     App.contentPlayer.setParams(params).setup(true);
                     App.contentPlayer.play();
-                } else {
-                    btnPlayPause.setPause();
                 }
             }
             @Override
             public void OnVideoPaused() {
                 App.contentPlayer.pause();
-                btnPlayPause.setPause();
+//                btnPlayPause.setPause();
             }
             @Override
             public void OnVideoPlayed() {
-                btnPlayPause.setPlay();
+//                btnPlayPause.setPlay();
                 item_player_duration.setText("");
             }
             @Override
@@ -233,7 +246,7 @@ public class Home extends BaseFragment {
             public void OnAdsVideoPaused() {}
             @Override
             public void OnAdsVideoPlayed() {
-                StreamingVideo.callApiVideo();
+                ApiUtils.callApiVideo();
                 btnPlayPause.setVisibility(View.GONE);
                 btnFullscreen.setVisibility(View.GONE);
             }
@@ -256,64 +269,79 @@ public class Home extends BaseFragment {
 
     /**
      *
-     * Running Text
+     * Running Banner
      *
      */
-    private void showRunningText(){
-        ContentJson json = App.storage.getData("configure");
-        if (json==null) return;
-        List<AdsRunningText> adsRunningTextList = new ArrayList<>();
+    private void setDataRunningBanner() throws JSONException {
+        dataRunningBanner = App.storage.getData(Storage.ST_RUNNING_BANNER);
+        if (dataRunningBanner==null) return;
 
-        String[] RTs = json.get("data").getString("running_text").split("\\|");
-        for (String RT : RTs) {
-            adsRunningTextList.add(new AdsRunningText(adsRunningTextList.size()+1, RT, 0));
+        JSONObject object = new JSONObject(dataRunningBanner.toString());
+        JSONArray jsonArray = object.getJSONArray("data");
+
+        if (runningBannerList.size() > 0) runningBannerList.subList(0, runningBannerList.size()).clear();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject runningBannerData = jsonArray.getJSONObject(i);
+            runningBannerList.add(runningBannerData.getString("banner_link"));
         }
-
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false) {
-            @Override
-            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
-
-                    private static final float SPEED = 5000f;
-
-                    @Override
-                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                        return SPEED / displayMetrics.densityDpi;
-                    }
-                };
-                smoothScroller.setTargetPosition(position);
-                startSmoothScroll(smoothScroller);
-            }
-        };
-        running_text.setLayoutManager(layoutManager);
-
-        adapterRunningText = new RunningTextAdapter(adsRunningTextList);
-        running_text.setAdapter(adapterRunningText);
-
-        autoScroll();
-
-    }
-    public void autoScroll() {
-        handlerRunningAds.postDelayed(runnableRunningAds, 1000);
+        Log.d(TAG, "run: " + runningBannerList.size());
     }
 
-    private Runnable runnableRunningAds = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                Integer intPosition = ((LinearLayoutManager) running_text.getLayoutManager()).findFirstVisibleItemPosition();
-                if (intPosition == 1) {
-                    adapterRunningText.getData().get(0).intTotalPlayed++;
-                    adapterRunningText.moveItems();
-                    adapterRunningText.notifyDataSetChanged();
-                    running_text.setAdapter(adapterRunningText);
+    private void showRunningBanner() throws JSONException {
+        try {
+            setDataRunningBanner();
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                    LinearLayoutManager.HORIZONTAL, false) {
+                @Override
+                public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                    smoothScroller = new LinearSmoothScroller(getContext()) {
+                        private static final float SPEED = 5000f;
+
+                        @Override
+                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                            return SPEED / displayMetrics.densityDpi;
+                        }
+                    };
+                    smoothScroller.setTargetPosition(position);
+                    startSmoothScroll(smoothScroller);
                 }
-                running_text.smoothScrollToPosition(adapterRunningText.getItemCount());
+            };
+            runningBanner.setLayoutManager(layoutManager);
 
-                handlerRunningAds.postDelayed(this, 10);
-            }catch (Exception e){}
+            runningBannerAdapter = new RunningBannerAdapter(runningBannerList);
+            runningBanner.setAdapter(runningBannerAdapter);
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Integer intPosition = ((LinearLayoutManager) runningBanner.getLayoutManager()).findFirstVisibleItemPosition();
+                        int trigger = runningBannerList.size() - 2;
+                        if (intPosition == 0 && fixBanner == 0) {
+                            runningBanner.setAdapter(runningBannerAdapter);
+                            fixBanner++;
+                        } else if (intPosition == trigger) {
+                            runningBannerAdapter.moveItems();
+                            ApiUtils.callApiRunningBanner();
+                            setDataRunningBanner();
+                            runningBannerAdapter.notifyDataSetChanged();
+                            Log.d(TAG, "run: " + runningBannerList.size());
+                            runningBanner.setAdapter(runningBannerAdapter);
+                        }
+                        runningBanner.smoothScrollToPosition(runningBannerAdapter.getItemCount());
+                        handler.postDelayed(this, 10);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }, 1000);
+        } catch (Exception e) {
+
         }
-    };
+
+    }
 
     /**
      *
@@ -322,13 +350,12 @@ public class Home extends BaseFragment {
      */
     private void showBanner(){
         if (adapterBanner==null){
-            bannerlist.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+            bannerlist.setLayoutManager(new GridLayoutManager(getContext(), 3));
             adapterBanner = new MainAdapter(itemsBanner, bannerlist);
             adapterBanner.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
                 @Override
                 public void onClick(final ContentJson data) {
                     if (data.has("action")) {
-                        App.contentPlayer.pause();
                         if (!data.getString("action").matches("")) {
                             String action = data.getString("action");
                             if (action.matches("app://champion-product")) {
@@ -409,9 +436,9 @@ public class Home extends BaseFragment {
                 public void onClick(final ContentJson data, int position) {
                     ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
                     ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
-//                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
-//                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
-//                    }else{
+                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
+                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
+                    }else{
                         if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
                             App.contentPlayer.pushAds(data);
 
@@ -423,7 +450,7 @@ public class Home extends BaseFragment {
                             v.setStyle(MainAdapter.STYLE_LIST_ADS);
                             itemsAds.add(v);
                         }
-//                    }
+                    }
                 }
             });
             iklanlist.setAdapter(adapterAds);
@@ -510,8 +537,8 @@ public class Home extends BaseFragment {
 
     @Override
     public void pageReset(){
+        fixBanner = 0;
         showSaldoIDR();
-        showRunningText();
         showPlayer();
     }
 
@@ -520,7 +547,8 @@ public class Home extends BaseFragment {
         super.onResume();
         pageReset();
 
-        StreamingVideo.callApiVideo();
+        ApiUtils.callApiRunningBanner();
+        ApiUtils.callApiVideo();
 
         if (App.contentPlayer!=null) {
             ViewGroup parent = (ViewGroup) App.contentPlayer.getView().getParent();
@@ -538,7 +566,7 @@ public class Home extends BaseFragment {
     public void onPause() {
         super.onPause();
         if (App.contentPlayer.isPlayingAds()) App.contentPlayer.pause();
-        App.contentPlayer.pause();
+//        App.contentPlayer.pause();
     }
 
 

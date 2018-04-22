@@ -8,18 +8,19 @@ public class ProvidersUtils {
 
     private ProvidersUtils() {}
 
-    public static String getKodePulsa(String brand) {
+    public static String getKodePulsa(String brand, String poin) {
+        String value = poin.substring(0, poin.length() - 2);
         switch (brand) {
             case "XL-INDO":
-                return "HXP10";
+                return "HXP" + value;
             case "T-SEL INDONESIA":
-                return "HSP10";
+                return "HSP" + value;
             case "AXIS INDONESIA":
-                return "HXP10";
+                return "HXP" + value;
             case "INDOSAT":
-                return "HIR10";
+                return "HIR10" + value;
             case "THREE-IND":
-                return "THR10";
+                return "HTR10" + value;
         }
         return "";
     }

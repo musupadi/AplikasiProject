@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private static final String TAG = MainAdapter.class.getSimpleName();
+
+    private RecyclerView recyclerView;
     private ArrayList<cacheData> mValues;
     private OnLoadMoreListener mOnLoadMoreListener;
     private OnItemClickListener mOnItemClickListener;
@@ -158,6 +162,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public MainAdapter(ArrayList<cacheData> items, RecyclerView recyclerView) {
         this.mValues = items;
+        this.recyclerView = recyclerView;
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -209,11 +214,14 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             return holder;
         }else if (viewType == STYLE_LIST_BANNER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_banner, parent, false);
+
             DataBanner holder = new DataBanner(view);
             setupClickableViews(holder);
             return holder;
         }else if (viewType == STYLE_LIST_ADS) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spaceiklan, parent, false);
+
+            view.getLayoutParams().width = parent.getMeasuredWidth() / 2;
             DataAds holder = new DataAds(view);
             setupClickableViews(holder);
             return holder;
@@ -418,6 +426,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public int getItemCount() {
+        if (recyclerView.getId() == R.id.bannerlist) return 3;
         return mValues.size();
     }
 

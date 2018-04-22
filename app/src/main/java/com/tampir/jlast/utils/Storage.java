@@ -71,6 +71,7 @@ public class Storage {
     public static final String ST_ADS= "iklan";
     public static final String ST_CONFIG = "configure";
     public static final String ST_VIDEO = "video";
+    public static final String ST_RUNNING_BANNER = "running_banner";
 
     /* PRIVATE MESSAGE */
     public void saveChat(String content,ContentJson member){

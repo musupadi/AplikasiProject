@@ -276,7 +276,7 @@ public class ChampionProductView extends BaseFragment {
                                 ContentJson user = App.storage.getCurrentUser();
                                 ContentJson saldo = App.storage.getData(Storage.ST_SALDOMEMBER);
 
-                                if (parseInt(saldo.getString("poin_card")) < 1000) {
+                                if (parseInt(saldo.getString("poin_card")) < parseInt(data.getString("poin_card"))) {
                                     Toast.makeText(getContext(), "Point Tidak Cukup", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
@@ -284,7 +284,7 @@ public class ChampionProductView extends BaseFragment {
                                 String isiPulsaParam = new ParameterHttpPost()
                                         .val("request_id", ProvidersUtils.getRequestID(user.getString("ktp")))
                                         .val("no_hp", noHp.getText().toString())//no hp
-                                        .val("kode_pulsa", ProvidersUtils.getKodePulsa(data.getString("brand")))
+                                        .val("kode_pulsa", ProvidersUtils.getKodePulsa(data.getString("brand"), data.getString("poin_card")))
                                         .build();
                                 HttpConnection.Task authTask = new HttpConnection.Task(HttpConnection.METHOD_POST, "topuprequest",
                                         isiPulsaParam, new HttpConnection.OnTaskFinishListener() {

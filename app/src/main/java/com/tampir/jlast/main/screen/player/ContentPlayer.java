@@ -57,15 +57,14 @@ public class ContentPlayer extends Fragment {
     }
 
     private void initPlayer(){
-        player = new VideoPlayer();
-        player.setVideoId(param.getVideoid());
-        player.setVideoUrl(param.getUrl());
-        player.getView((FrameLayout) fragment.findViewById(R.id.surface));
-
         if (!isContinues) {
             release();
         }
 
+        player = new VideoPlayer();
+        player.setVideoId(param.getVideoid());
+        player.setVideoUrl(param.getUrl());
+        player.getView((FrameLayout) fragment.findViewById(R.id.surface));
 
         thumbnail.setVisibility(View.VISIBLE);
         progress.setVisibility(View.VISIBLE);

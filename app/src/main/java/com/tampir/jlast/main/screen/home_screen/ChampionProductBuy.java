@@ -28,6 +28,7 @@ import com.tampir.jlast.utils.General;
 import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.ParameterHttpPost;
 import com.tampir.jlast.utils.ProvidersUtils;
+import com.tampir.jlast.utils.Storage;
 
 import java.util.ArrayList;
 
@@ -79,59 +80,14 @@ public class ChampionProductBuy extends BaseChildFragment {
             @Override
             public void onClick(final ContentJson data, int item) {
                 if (item==0){
-                    ((BaseContainerFragment) getParentFragment().getParentFragment()).replaceFragment(ChampionProductView.instance(data), true);
+                    ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
+                    ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
+                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
+                        General.alertOK("Kumpulkan "+configure.getInt("jumlah_greet")+" greet untuk menikmati Champion Product", getContext());
+                    }else {
+                        ((BaseContainerFragment) getParentFragment().getParentFragment()).replaceFragment(ChampionProductView.instance(data), true);
+                    }
                 }
-//                if (item==1){
-//                    General.alertOKCancel("Beli " + data.getString("nama_product"), getContext(), new General.OnButtonClick() {
-//                        @Override
-//                        public void onClick(int button) {
-//                            if (button == AlertDialog.BUTTON_POSITIVE) {
-//                                ContentJson user = App.storage.getCurrentUser();
-//                                String isiPulsaParam = new ParameterHttpPost()
-//                                        .val("request_id", ProvidersUtils.getRequestID(user.getString("ktp")))
-//                                        .val("no_hp", "00")//no hp
-//                                        .val("kode_pulsa", ProvidersUtils.getKodePulsa(data.getString("brand")))
-//                                        .build();
-//                                String urlParameters = new ParameterHttpPost()
-//                                        .val("id", user.getString("id"))
-//                                        .val("product_id", data.getString("id"))
-//                                        .val("sessionlogin", user.getString("ses"))
-//                                        .build();
-//                                mAuthTask = new HttpConnection.Task(HttpConnection.METHOD_POST, "ClaimProduct", urlParameters, new HttpConnection.OnTaskFinishListener() {
-//                                    @Override
-//                                    public void onStart() {
-//                                        pdialogInfo.show();
-//                                    }
-//
-//                                    @Override
-//                                    public void onFinished(String jsonString, HttpConnection.Error err) {
-//                                        pdialogInfo.dismiss();
-//                                        if (err == null) {
-//                                            ContentJson cj = new ContentJson(jsonString);
-//                                            if (cj.getInt("status") == 1) {
-//                                                General.alertOK(cj.getString("message"), getContext(), new General.OnButtonClick() {
-//                                                    @Override
-//                                                    public void onClick(int button) {
-//                                                        ((ChampionProduct) getParentFragment()).selectPager(1);
-//                                                        ((ChampionProduct) getParentFragment()).refreshPager(1);
-//                                                    }
-//                                                });
-//                                                //update Saldo IDR
-//                                                ((Main) getActivity()).fetchPoinInfo();
-//                                            } else {
-//                                                Toast.makeText(getContext(), cj.getString("message"), Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        } else {
-//                                            Toast.makeText(getContext(), err.Message, Toast.LENGTH_SHORT).show();
-//                                        }
-//
-//                                    }
-//                                });
-//                                mAuthTask.execute();
-//                            }
-//                        }
-//                    });
-//                }
             }
         });
         adapter.setOnLoadMoreListener(new OnLoadMoreListener() {

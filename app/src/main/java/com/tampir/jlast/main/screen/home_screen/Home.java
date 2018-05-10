@@ -50,6 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static java.util.Collections.shuffle;
+
 public class Home extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
 
@@ -149,7 +151,6 @@ public class Home extends BaseFragment {
                 btnPlayPause.setVisibility(View.GONE);
                 btnFullscreen.setVisibility(View.GONE);
             }else{
-//                btnPlayPause.setVisibility(View.VISIBLE);
                 btnFullscreen.setVisibility(View.VISIBLE);
                 imgVideoThumbnail.setVisibility(View.GONE);
             }
@@ -168,20 +169,12 @@ public class Home extends BaseFragment {
             parent.removeView(App.contentPlayer.getView());
         }
         framePlayer.addView(App.contentPlayer.getView(),0);
-//        framePlayer.post(new Runnable() {
-//            @Override
-//            public void run() {
-////                int mWidth = framePlayer.getWidth();
-////                framePlayer.getLayoutParams().height = mWidth * 9/12;
-//            }
-//        });
         framePlayer.setVisibility(View.VISIBLE);
         showPlayer();
 
         Glide.with(getContext())
                 .load(configure.getString("streaming_url_placeholder"))
                 .fitCenter()
-                //.crossFade()
                 .placeholder(R.drawable.localdefault)
                 .error(R.drawable.localdefault)
                 .into(imgVideoThumbnail);
@@ -206,7 +199,6 @@ public class Home extends BaseFragment {
             }
             @Override
             public void OnVideoEnded() {
-//                btnPlayPause.setPause();
                 ApiUtils.callApiVideo();
                 if (params.getUrl().equals(dataVideo.get("data", indexVideo
                 ).getString("video_link"))) {
@@ -223,11 +215,9 @@ public class Home extends BaseFragment {
             @Override
             public void OnVideoPaused() {
                 App.contentPlayer.pause();
-//                btnPlayPause.setPause();
             }
             @Override
             public void OnVideoPlayed() {
-//                btnPlayPause.setPlay();
                 item_player_duration.setText("");
             }
             @Override
@@ -279,13 +269,13 @@ public class Home extends BaseFragment {
         JSONObject object = new JSONObject(dataRunningBanner.toString());
         JSONArray jsonArray = object.getJSONArray("data");
 
-        if (runningBannerList.size() > 0) runningBannerList.subList(0, runningBannerList.size()).clear();
+        if (runningBannerList.size() > 0) runningBannerList.clear();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject runningBannerData = jsonArray.getJSONObject(i);
             runningBannerList.add(runningBannerData.getString("banner_link"));
         }
-        Log.d(TAG, "run: " + runningBannerList.size());
+        shuffle(runningBannerList);
     }
 
     private void showRunningBanner() throws JSONException {
@@ -294,17 +284,8 @@ public class Home extends BaseFragment {
             final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                     LinearLayoutManager.HORIZONTAL, false) {
                 @Override
-                public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                    smoothScroller = new LinearSmoothScroller(getContext()) {
-                        private static final float SPEED = 5000f;
-
-                        @Override
-                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                            return SPEED / displayMetrics.densityDpi;
-                        }
-                    };
-                    smoothScroller.setTargetPosition(position);
-                    startSmoothScroll(smoothScroller);
+                public boolean canScrollHorizontally() {
+                    return false;
                 }
             };
             runningBanner.setLayoutManager(layoutManager);
@@ -317,26 +298,23 @@ public class Home extends BaseFragment {
                 @Override
                 public void run() {
                     try {
-                        Integer intPosition = ((LinearLayoutManager) runningBanner.getLayoutManager()).findFirstVisibleItemPosition();
-                        int trigger = runningBannerList.size() - 2;
-                        if (intPosition == 0 && fixBanner == 0) {
+                        if (fixBanner == 0) {
                             runningBanner.setAdapter(runningBannerAdapter);
                             fixBanner++;
-                        } else if (intPosition == trigger) {
+                        } else {
                             runningBannerAdapter.moveItems();
                             ApiUtils.callApiRunningBanner();
                             setDataRunningBanner();
                             runningBannerAdapter.notifyDataSetChanged();
-                            Log.d(TAG, "run: " + runningBannerList.size());
                             runningBanner.setAdapter(runningBannerAdapter);
                         }
-                        runningBanner.smoothScrollToPosition(runningBannerAdapter.getItemCount());
-                        handler.postDelayed(this, 10);
+                        runningBanner.smoothScrollToPosition(0);
+                        handler.postDelayed(this, 5000);
                     } catch (Exception e) {
 
                     }
                 }
-            }, 1000);
+            }, 5000);
         } catch (Exception e) {
 
         }
@@ -436,20 +414,16 @@ public class Home extends BaseFragment {
                 public void onClick(final ContentJson data, int position) {
                     ContentJson info = App.storage.getData(Storage.ST_SALDOMEMBER);
                     ContentJson configure = App.storage.getData(Storage.ST_CONFIG).get("data");
-                    if (info.getInt("greet_count")<configure.getInt("jumlah_greet")) {
-                        General.alertOK("Kumpulkan " + configure.getInt("jumlah_greet") + " greet untuk memperoleh poin card dari iklan", getContext());
-                    }else{
-                        if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
+                    if (!App.contentPlayer.isInLineAds() && !data.getBoolean("is_watched")){
                             App.contentPlayer.pushAds(data);
 
-                            itemsAds.remove(position);
-                            adapterAds.notifyItemRemoved(position);
-                            cacheData v = new cacheData();
-                            data.putBoolean("is_watched",true);
-                            v.setData(data);
-                            v.setStyle(MainAdapter.STYLE_LIST_ADS);
-                            itemsAds.add(v);
-                        }
+                        itemsAds.remove(position);
+                        adapterAds.notifyItemRemoved(position);
+                        cacheData v = new cacheData();
+                        data.putBoolean("is_watched",true);
+                        v.setData(data);
+                        v.setStyle(MainAdapter.STYLE_LIST_ADS);
+                        itemsAds.add(v);
                     }
                 }
             });

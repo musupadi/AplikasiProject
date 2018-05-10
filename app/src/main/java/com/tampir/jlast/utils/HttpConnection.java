@@ -307,6 +307,7 @@ public class HttpConnection {
 
 			connection.setRequestProperty("Content-Language", "en-US");
 			connection.setRequestProperty("signature", General.md5(time.substring(0,8) + "j3Ist" + user_id + urlParameters));
+
 			if (getWebSession()!=null) connection.setRequestProperty("Cookie", getWebSession());
 			if (connection.getRequestMethod().matches("POST")) {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

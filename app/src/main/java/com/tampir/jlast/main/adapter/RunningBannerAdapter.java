@@ -2,18 +2,17 @@ package com.tampir.jlast.main.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tampir.jlast.R;
-import com.tampir.jlast.utils.AdsRunningText;
 
 import java.util.List;
+
+import static java.util.Collections.shuffle;
 
 public class RunningBannerAdapter extends RecyclerView.Adapter<RunningBannerAdapter.ViewHolder> {
     private List<String> listAdvertisement;
@@ -34,6 +33,7 @@ public class RunningBannerAdapter extends RecyclerView.Adapter<RunningBannerAdap
     }
 
     public RunningBannerAdapter(List<String> listAdvertisement) {
+        shuffle(listAdvertisement);
         this.listAdvertisement = listAdvertisement;
     }
 
@@ -48,6 +48,14 @@ public class RunningBannerAdapter extends RecyclerView.Adapter<RunningBannerAdap
 
     @Override
     public void onBindViewHolder(RunningBannerAdapter.ViewHolder holder, int position) {
+        int padding = holder.context.getResources().getDimensionPixelSize(R.dimen.spaceYangDiPermasalahkan);
+        int paddingFix = holder.context.getResources().getDimensionPixelSize(R.dimen.spaceYangDiPermasalahkan1);
+
+        if (position == 0) {
+            holder.imageView.setPadding(0, padding, padding, padding);
+        } else {
+            holder.imageView.setPadding(padding, padding, paddingFix, padding);
+        }
         Glide.with(holder.context)
                 .load(listAdvertisement.get(position))
                 .placeholder(R.drawable.localdefault)
@@ -58,7 +66,7 @@ public class RunningBannerAdapter extends RecyclerView.Adapter<RunningBannerAdap
 
     @Override
     public int getItemCount() {
-        return listAdvertisement.size();
+        return 2;
     }
 
     public void moveItems(){

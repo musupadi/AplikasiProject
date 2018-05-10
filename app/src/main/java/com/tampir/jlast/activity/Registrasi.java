@@ -204,7 +204,7 @@ public class Registrasi extends AppCompatActivity {
     String strKabupaten = "";
     String strProvinsi = "";
     private void checkKTP(){
-        if (tKTP.getText().toString().length()<16) return;;
+        if (tKTP.getText().toString().length()<16) return;
 
         strProvinsi = tKTP.getText().toString().substring(0,2);
         strKabupaten = tKTP.getText().toString().substring(0,4);

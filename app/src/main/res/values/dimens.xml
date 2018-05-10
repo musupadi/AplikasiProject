@@ -29,4 +29,8 @@
     <dimen name="spaceExtraMedium">35dp</dimen>
     <dimen name="spaceLarge">40dp</dimen>
     <dimen name="spaceMinusMedium">-30dp</dimen>
+
+    <!-- whatever -->
+    <dimen name="spaceYangDiPermasalahkan">2dp</dimen>
+    <dimen name="spaceYangDiPermasalahkan1">5dp</dimen>
 </resources>

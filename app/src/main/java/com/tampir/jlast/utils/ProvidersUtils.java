@@ -18,9 +18,9 @@ public class ProvidersUtils {
             case "AXIS INDONESIA":
                 return "HXP" + value;
             case "INDOSAT":
-                return "HIR10" + value;
+                return "HIR" + value;
             case "THREE-IND":
-                return "HTR10" + value;
+                return "HTR" + value;
         }
         return "";
     }

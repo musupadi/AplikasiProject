@@ -8,7 +8,7 @@ import java.io.File;
  * Created by rahmatul on 6/19/16.
  */
 public class Const {;
-    public static final String HOST = "https://otakatik.j-last.com/api/";
+    public static final String HOST = "https://cms.j-lastworld.com/api/";
     public static final String TAG = "JLAST";
     public static final int LIMIT_LOAD_DATA = 30;
 

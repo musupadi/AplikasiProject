@@ -330,11 +330,11 @@ public class Main extends AppCompatActivity implements SaldoIDR.FragmentCallback
                     if (cj.getInt("status") == 1) {
                         General.alertOK(cj.getString("message"),Main.this);
                         fetchPoinInfo();
-                        setAdvertiserHistory(data);
                     }
                 }
             }
         }).execute();
+        setAdvertiserHistory(data);
     }
 
     private void setAdvertiserHistory(ContentJson data) {

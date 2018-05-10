@@ -31,7 +31,7 @@ import static rx.android.schedulers.AndroidSchedulers.mainThread;
 import static rx.schedulers.Schedulers.io;
 
 public class CropPicture extends AppCompatActivity {
-    private MenuItem mnDone;
+        private MenuItem mnDone;
     private CropView cropView;
     private String request;
 

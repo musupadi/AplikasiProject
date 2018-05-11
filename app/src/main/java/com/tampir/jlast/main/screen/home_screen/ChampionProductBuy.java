@@ -2,7 +2,6 @@ package com.tampir.jlast.main.screen.home_screen;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import com.tampir.jlast.App;
 import com.tampir.jlast.R;
-import com.tampir.jlast.activity.Main;
 import com.tampir.jlast.main.adapter.MainAdapter;
 import com.tampir.jlast.main.adapter.OnLoadMoreListener;
 import com.tampir.jlast.main.adapter.cacheData;
@@ -23,11 +21,9 @@ import com.tampir.jlast.main.screen.BaseContainerFragment;
 import com.tampir.jlast.utils.Connectivity;
 import com.tampir.jlast.utils.Const;
 import com.tampir.jlast.utils.ContentJson;
-import com.tampir.jlast.utils.DateUtils;
 import com.tampir.jlast.utils.General;
 import com.tampir.jlast.utils.HttpConnection;
 import com.tampir.jlast.utils.ParameterHttpPost;
-import com.tampir.jlast.utils.ProvidersUtils;
 import com.tampir.jlast.utils.Storage;
 
 import java.util.ArrayList;

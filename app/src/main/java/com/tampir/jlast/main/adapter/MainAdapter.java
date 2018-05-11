@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.tampir.jlast.R;
 import com.tampir.jlast.utils.ContentJson;
 import com.tampir.jlast.utils.ResourceUtils;
 import com.tampir.jlast.utils.Storage;
-import com.tampir.jlast.views.ButtonProgress;
 
 import java.util.ArrayList;
 

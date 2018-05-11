@@ -1,7 +1,5 @@
 package com.tampir.jlast.utils;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -86,7 +86,6 @@ public class Home extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ApiUtils.callApiVideo();
         ApiUtils.callApiRunningBanner();
 
         if (fragment==null){
@@ -180,34 +179,17 @@ public class Home extends BaseFragment {
 
         //setup
         final ContentPlayer.params params = new ContentPlayer.params();
-
-        params.setUrl(dataVideo.get("data", indexVideo).getString("video_link"));
+        params.setUrl(configure.getString("streaming_url"));
         params.setThumbnail(configure.getString("streaming_url_placeholder"));
         params.setOnVideoStatusListener(new ContentPlayer.params.OnVideoStatusListener() {
             @Override
             public void OnVideoLoaded() {
-                ApiUtils.callApiVideo();
                 btnPlayPause.setVisibility(View.GONE);
-                if (params.getUrl().equals(dataVideo.get("data", indexVideo
-                ).getString("video_link"))) {
-                    App.contentPlayer.play();
-                }
-
+                App.contentPlayer.play();
             }
             @Override
             public void OnVideoEnded() {
-                ApiUtils.callApiVideo();
-                if (params.getUrl().equals(dataVideo.get("data", indexVideo
-                ).getString("video_link"))) {
-                    if (indexVideo < dataVideo.getArraySize("data") - 1) {
-                        indexVideo++;
-                    } else {
-                        indexVideo = 0;
-                    }
-                    params.setUrl(dataVideo.get("data", indexVideo).getString("video_link"));
-                    App.contentPlayer.setParams(params).setup(true);
-                    App.contentPlayer.play();
-                }
+                App.contentPlayer.play();
             }
             @Override
             public void OnVideoPaused() {
@@ -233,7 +215,6 @@ public class Home extends BaseFragment {
             public void OnAdsVideoPaused() {}
             @Override
             public void OnAdsVideoPlayed() {
-                ApiUtils.callApiVideo();
                 btnPlayPause.setVisibility(View.GONE);
                 btnFullscreen.setVisibility(View.GONE);
             }
@@ -519,7 +500,6 @@ public class Home extends BaseFragment {
         pageReset();
 
         ApiUtils.callApiRunningBanner();
-        ApiUtils.callApiVideo();
 
         if (App.contentPlayer!=null) {
             ViewGroup parent = (ViewGroup) App.contentPlayer.getView().getParent();

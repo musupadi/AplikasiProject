@@ -38,7 +38,7 @@ public class Flashscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
 
-        ApiUtils.callApiVideo();
+//        ApiUtils.callApiVideo();
         ApiUtils.callApiRunningBanner();
         ButterKnife.bind(this);
         if (  //request permission >= Mashalow
